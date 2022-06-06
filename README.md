@@ -9,3 +9,5 @@ go run main.go "ls -la" \
                 "mkdir test"
 
 
+#### Todo
+add generating report instead of printing always times ( junit xml - gitlab usecase)
