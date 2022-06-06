@@ -6,6 +6,7 @@ import (
 	"os/exec"
 	"strings"
 	"time"
+    "syscall"
 )
 
 func main() {
@@ -14,13 +15,17 @@ func main() {
 		splittedCommand := strings.Split(command, " ")
 		cmd := exec.Command(splittedCommand[0], splittedCommand[1:]...)
 		start := time.Now()
-		stdout, stderr := cmd.Output()
+		stdout, err := cmd.Output()
 		elapsed := time.Since(start)
-		if stderr != nil {
-			fmt.Printf("Time: %s stdder:\n %s \n", elapsed, stderr)
+		if err != nil {
+            if msg, ok := err.(*exec.ExitError); ok {
+                fmt.Printf("Time: %s stdder:\n %s \n", elapsed, err)
+                os.Exit(msg.Sys().(syscall.WaitStatus).ExitStatus())
+             }
+			fmt.Printf("Time: %s stdder:\n %s \n", elapsed, err)
 			os.Exit(1)
 		}
-		fmt.Printf("Time: %s stdout %s \n", elapsed, stdout)
+		fmt.Printf("Time: %s stdout:\n %s \n", elapsed, stdout)
 	}
 
 }
