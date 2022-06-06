@@ -5,8 +5,8 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+	"syscall"
 	"time"
-    "syscall"
 )
 
 func main() {
@@ -18,10 +18,10 @@ func main() {
 		stdout, err := cmd.Output()
 		elapsed := time.Since(start)
 		if err != nil {
-            if msg, ok := err.(*exec.ExitError); ok {
-                fmt.Printf("Time: %s stdder:\n %s \n", elapsed, err)
-                os.Exit(msg.Sys().(syscall.WaitStatus).ExitStatus())
-             }
+			if msg, ok := err.(*exec.ExitError); ok {
+				fmt.Printf("Time: %s stdder:\n %s \n", elapsed, err)
+				os.Exit(msg.Sys().(syscall.WaitStatus).ExitStatus())
+			}
 			fmt.Printf("Time: %s stdder:\n %s \n", elapsed, err)
 			os.Exit(1)
 		}
@@ -29,4 +29,3 @@ func main() {
 	}
 
 }
-
